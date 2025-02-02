@@ -61,14 +61,15 @@ class Robot_in_Room:
     
     # Check whether sensor on right side of wall
     def visible(self,s,wall):
-        sensor = self.sensor_glob_frame() #Tous les capteurs!!!
-        print(sensor)
-        xs = sensor[0]
-        ys = sensor[1]
+        sensors  = self.sensors
+        i = np.where(sensors == s)[0][0]
+        s = self.sensor_glob_frame()[i] #Tous les capteurs!!!
+        xs = s[0]
+        ys = s[1]
         
         
         t = [wall[0][0]-wall[0][1], wall[1][0]-wall[1][1]]
-        n = [-t[1], t[0]]
+        n = [t[1], -t[0]]
 
         vec = np.array([xs - wall[1][0], ys-wall[1][1]])
 
@@ -127,6 +128,6 @@ myproblem.plot()
 
 s = np.array([0.5,0.25,np.pi/4])
 print(myproblem.sensor_glob_frame())
-#for wall in walls:
-    #print(myproblem.visible(s,wall))
+for wall in walls:
+    print(myproblem.visible(s,wall))
     
