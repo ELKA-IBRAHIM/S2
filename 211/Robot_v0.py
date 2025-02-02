@@ -68,7 +68,7 @@ class Robot_in_Room:
         ys = s[1]
         
         
-        t = [wall[0][0]-wall[0][1], wall[1][0]-wall[1][1]]
+        t = [wall[0][0]-wall[1][0], wall[0][1]-wall[1][1]]
         n = [t[1], -t[0]]
 
         vec = np.array([xs - wall[1][0], ys-wall[1][1]])
@@ -100,6 +100,7 @@ class Robot_in_Room:
                      [s[i,1],s[i,1] + self.y[i]*np.sin(s[i,2])], 'ro', linestyle="--")
 
         plt.axis('square')
+        plt.grid()
         plt.show()
 
       
