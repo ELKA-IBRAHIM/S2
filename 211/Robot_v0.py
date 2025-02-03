@@ -4,7 +4,9 @@ Created on Wed Sep 20  2023
 Updated on Tue Jan 30  2024
 Updated on Tue Jan 28  2024
 
-@author: Kieffer
+@author: Kieffer [Teacher]
+Homework done by : EL KASSIMI Ibrahim
+
 """
 
 import numpy as np
