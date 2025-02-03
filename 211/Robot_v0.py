@@ -59,13 +59,17 @@ class Robot_in_Room:
             
         return s
     
+    def s_g(self, s):
+            sensors  = self.sensors
+            i = np.where(sensors == s)[0][0]
+            s = self.sensor_glob_frame()[i] #Tous les capteurs!!!
+            return s
     # Check whether sensor on right side of wall
+
     def visible(self,s,wall):
-        sensors  = self.sensors
-        i = np.where(sensors == s)[0][0]
-        s = self.sensor_glob_frame()[i] #Tous les capteurs!!!
-        xs = s[0]
-        ys = s[1]
+        s_g = self.s_g(s) #Tous les capteurs!!!
+        xs = s_g[0]
+        ys = s_g[1]
         
         
         t = [wall[0][0]-wall[1][0], wall[0][1]-wall[1][1]]
@@ -83,6 +87,17 @@ class Robot_in_Room:
     def get_sensor_readings(self):
         # simulated distances
         ym = np.zeros(self.nb_sensors)
+
+        d = {}
+        for i in range(1,self.nb_sensors+1):
+            d[i] = []
+            s = self.sensor_glob_frame()[i]
+            xs, ys, theta = s[0], s[1], s[3]
+            for wall in self.walls:
+                if self.visible(s, wall):
+
+
+
 
         # A compléter
         return ym
