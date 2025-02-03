@@ -147,7 +147,7 @@ class Robot_in_Room:
 
 
 
-p_star = np.array([8,1,0.8])     
+p_star = np.array([2,2,0.8])     
     
 myproblem = Robot_in_Room(p_star)
 
