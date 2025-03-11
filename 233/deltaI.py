@@ -29,10 +29,20 @@ plt.ylabel("I_min en A")
 plt.show()
 """
 
+"""
 plt.figure(2)
 plt.grid()
 plt.plot(f_list/1e3, delta_vs)
 plt.xlabel("La fréquence en Khz")
 plt.ylabel("delta_vs en V")
-plt.savefig('delta_vs en fct de f.png')  # Save the figure as a PNG file
+#plt.savefig('delta_vs en fct de f.png')  
+plt.show()"
+"""
+plt.figure(1)
+plt.grid()
+plt.plot(f_list/1e3, delta_i)
+plt.title("Ondulation du courant en fonction de la fréquence à rapport cyclique fixe(0.5)")
+plt.xlabel("La fréquence en Khz")
+plt.ylabel("Ondulation du courant en A")
+plt.savefig('Ondulation en fct de la fréquence à rapport cyclique fixe.png')  # Save the figure as a PNG file
 plt.show()
