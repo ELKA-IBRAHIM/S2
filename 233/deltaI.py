@@ -13,19 +13,19 @@ f_max = 30e3 # [Hz]
 f_list = np.linspace(f_min, f_max, 1000)
 
 I_l = alpha*Ve/R
+I_s = I_l
 
 delta_i = alpha*(1-alpha)*Ve/(L*f_list)
-
 I_min = I_l-delta_i/2
-
 delta_vs = alpha*(1-alpha)*Ve/(8*C*f_list)
+
 """
 plt.figure(1)
 plt.grid()
 plt.plot(f_list/1e3, I_min)
 plt.xlabel("La fréquence en Khz")
-plt.ylabel("I_min en A")
-#plt.savefig('I_min en fct de f.png')  # Save the figure as a PNG file
+plt.ylabel(r"$I_{min}$ en A")
+plt.savefig('I_min en fct de f.pdf')  # Save the figure as a PNG file
 plt.show()
 """
 
@@ -34,10 +34,11 @@ plt.figure(2)
 plt.grid()
 plt.plot(f_list/1e3, delta_vs)
 plt.xlabel("La fréquence en Khz")
-plt.ylabel("delta_vs en V")
-#plt.savefig('delta_vs en fct de f.png')  
-plt.show()"
+plt.ylabel(r"$\Delta V_s $ en V")
+plt.savefig('delta_vs en fct de f.pdf')  
+plt.show()
 """
+
 alpha_list = np.linspace(0,0.5,6)
 plt.figure(1)
 for j in range(len(alpha_list)):
@@ -66,5 +67,5 @@ plt.legend()
 plt.title("Ondulation du courant en fonction de la fréquence à rapport cyclique fixe")
 plt.xlabel("La fréquence en Khz")
 plt.ylabel("Ondulation du courant en A")
-#plt.savefig('Ondulation en fct de la fréquence à rapport cyclique fixe.png')  # Save the figure as a PNG file
+plt.savefig('Ondulation en fct de la fréquence à rapport cyclique fixe.pdf')  # Save the figure as a PNG file
 plt.show()
