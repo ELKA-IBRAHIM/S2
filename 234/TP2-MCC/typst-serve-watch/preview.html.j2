@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Typst Live Preview</title>
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: monospace;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        #pdfjs-container {
+            flex: 1;
+            position: relative;
+        }
+        #error-viewer {
+            background: #1e1e1e;
+            color: #f8f8f2;
+            padding: 1em;
+            white-space: pre-wrap;
+            overflow: auto;
+            display: block;
+        }
+        .ok-line { color: #00ff00; }
+        .error-line { color: #ff5555; }
+        .warning-line { color: #ffb86c; }
+    </style>
+</head>
+<body>
+    <div id="pdfjs-container">
+        <iframe id="pdfjs-viewer" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
+    <pre id="error-viewer"></pre>
+
+    <script>
+        const errorViewer = document.getElementById('error-viewer');
+        const pdfjsViewer = document.getElementById('pdfjs-viewer');
+        let ws;
+        
+        // Point to your locally hosted PDF.js viewer
+        pdfjsViewer.src = 'pdfjs/web/viewer.html?file=';
+        
+        function connect() {
+            ws = new WebSocket(`ws://${window.location.host}/ws`);
+            
+            ws.onopen = () => {
+                console.log('Connected to server');
+                ws.send('get_pdf');
+            };
+            
+            ws.onmessage = async (event) => {
+                if (event.data instanceof Blob) {
+                    // PDF data received
+                    const url = URL.createObjectURL(event.data);
+                    
+                    // Load PDF in viewer
+                    pdfjsViewer.contentWindow.location.replace(
+                        `pdfjs/web/viewer.html?file=${encodeURIComponent(url)}`
+                    );
+                } else {
+                    const msg = JSON.parse(event.data);
+                    if (msg.type === 'update') {
+                        ws.send('get_pdf');
+                        errorViewer.innerHTML = '<span class="ok-line">Everything is fine</span>';
+                        errorViewer.style.display = 'block';
+                    } else if (msg.type === 'error') {
+                        errorViewer.innerHTML = highlightErrors(msg.message);
+                        errorViewer.style.display = 'block';
+                    } else if (msg.type === 'warning') {
+                        errorViewer.innerHTML = highlightErrors(msg.message);
+                        errorViewer.style.display = 'block';
+                        ws.send('get_pdf');
+                    }
+                }
+            };
+            
+            ws.onclose = () => {
+                console.log('Disconnected - retrying in 1s');
+                setTimeout(connect, 1000);
+            };
+        }
+        
+        function highlightErrors(text) {
+            return text
+                .replace(/error:(.*)/g, '<span class="error-line">error:$1</span>')
+                .replace(/warning:(.*)/g, '<span class="warning-line">warning:$1</span>');
+        }
+        
+        connect();
+    </script>
+</body>
+</html>
